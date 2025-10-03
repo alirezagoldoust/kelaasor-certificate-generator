@@ -1,3 +1,4 @@
 env/
 generated_certificates/
 .env
+cert_tmp.html
