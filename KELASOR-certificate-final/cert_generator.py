@@ -4,6 +4,7 @@ import os
 from colorama import Fore, Style
 import requests
 from dotenv import load_dotenv
+from datetime import datetime
 
 BASE_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 print(BASE_DIRECTORY)
@@ -59,6 +60,22 @@ def generate_certificate(student_first_name, student_last_name, student_pre_name
     
     formal_name_element = soup.find_all(id='student-text-formal-name')[0]
     formal_name_element.string = f"{student_pre_name}.{student_last_name}"
+    
+    # Get current date
+    current_date = datetime.now()
+    
+    # Format the date parts
+    day_name = current_date.strftime("%A")
+    day_num = current_date.day
+    day_suffix = "th" if 11 <= day_num <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(day_num % 10, "th")
+    month_year = current_date.strftime("%B %Y")
+    
+    # Update the date elements
+    date_1_element = soup.find_all(class_='date-1')[0]
+    date_1_element.string = f"{day_name} {day_num}{day_suffix},"
+    
+    date_2_element = soup.find_all(class_='date-2')[0]
+    date_2_element.string = month_year
     
     adjectives = soup.find_all(class_='student-adjective')
     for adjective in adjectives: 
